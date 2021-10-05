@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      - name: Test git
+        run: git pull
+      
       - name: Get latest tag
         id: latestTag
         uses: WyriHaximus/github-action-get-previous-tag@v1
