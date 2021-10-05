@@ -21,7 +21,7 @@ jobs:
           tags: true
       
       - name: Publish to PSGallery
-        if: steps.githubrelease.conclusion == success
+        if: steps.githubrelease.conclusion == 'success'
         shell: pwsh
         env:
           PSGALLERY_TOKEN: ${{ secrets.PSGALLERY_TOKEN }}
