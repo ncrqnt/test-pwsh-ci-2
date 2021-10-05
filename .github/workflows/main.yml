@@ -1,0 +1,66 @@
+name: Test
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+    paths-ignore:
+      - '**/README.md'
+      - '.github/**'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+      - '.github/**'
+
+jobs:
+  test:
+    name: Test module
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+
+      - name: Setup PowerShell module cache
+        id: cacher
+        uses: actions/cache@v2
+        with:
+          path: ~\Documents\PowerShell\Modules
+          key: ${{ runner.os }}-CITest-dependencies
+
+      - name: Install InvokeBuild module
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          if (-not (Get-Module -Name InvokeBuild -ListAvailable)) {
+              Install-Module InvokeBuild -Force -Scope CurrentUser -ErrorAction Stop
+          }
+          Import-Module InvokeBuild -ErrorAction Stop
+
+      - name: Analyze code with PSScriptAnalyzer
+        run: Invoke-Build -Task Analyze
+
+      - name: Publish code analysis results
+        uses: MirrorNG/nunit-reporter@v1.0.11
+        if: always()
+        with:
+          path: build\AnalyzerResults.xml
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Test code with Pester tests
+        run: Invoke-Build -Task Test
+
+      - name: Publish test results
+        uses: MirrorNG/nunit-reporter@v1.0.11
+        if: always()
+        with:
+          path: build\PesterResults.xml
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish code coverage results
+        uses: madrapps/jacoco-report@v1.2
+        with:
+          path: build\CodeCoverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 75
+          min-coverage-changed-files: 75
