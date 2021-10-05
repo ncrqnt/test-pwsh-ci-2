@@ -1,0 +1,22 @@
+name: Publish module
+on:
+  release:
+    types: [published]
+
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish module
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download 'NewBuild' artifact
+        uses: actions/download-artifact@v2.0.10
+        with:
+          name: NewBuild
+
+      - name: Publish to PSGallery
+        shell: pwsh
+        env:
+          PSGALLERY_TOKEN: ${{ secrets.PSGALLERY_TOKEN }}
+        run: Publish-Module -Name .\NewBuild\*\CITest.psd1 -NuGetApiKey $env:PSGALLERY_TOKEN -AllowPrerelease -Verbose
