@@ -1,12 +1,5 @@
-name: Test
+name: Test module
 on:
-  push:
-    branches:
-      - main
-      - feature/**
-    paths-ignore:
-      - '**/README.md'
-      - '.github/**'
   pull_request:
     branches:
       - main
