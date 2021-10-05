@@ -1,0 +1,73 @@
+name: Build module
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+      - '.github/**'
+      - '.gitignore'
+      
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build module
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v2
+
+      - name: Create variables for module cacher
+        id: psmodulecache
+        uses: potatoqualitee/psmodulecache@v3.5
+        with:
+          modules-to-cache: Pester, PSScriptAnalyzer, InvokeBuild, SimplySql
+          shell: pwsh
+          
+      - name: Run module cacher action
+        id: cacher
+        uses: actions/cache@v2
+        with:
+          key: ${{ steps.psmodulecache.outputs.keygen }}
+          path: |
+            ${{ steps.psmodulecache.outputs.modulepath }}
+            
+      - name: Install PowerShell modules
+        if: steps.cacher.outputs.cache-hit != 'true'
+        uses: potatoqualitee/psmodulecache@v3.5
+        
+      - name: Import InvokeBuild
+        run: Import-Module InvokeBuild -ErrorAction Stop
+
+      - name: Build module
+        run: Invoke-Build -Task Build -Configuration 'Release'
+        
+      - name: Upload new build as artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: NewBuild
+          path: .\build\CITest\*
+
+      - name: Upload new version to repo
+        uses: matheusalbino/git-commit@v1.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          message: Bump version
+      
+      - name: Bump new version and upload tag
+        run: |
+          $manifest = Invoke-LocalizedData -FileName CITest.psd1 -BaseDirectory .\CITest
+          $version = "v$($manifest.ModuleVersion)"
+          
+          git --global user.name 'Github Actions - Git Commit'
+          git --global user.email 'github-actions-git-commit@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com&${{ github.repository }}
+          
+          git add .\CITest\CITest.psd1
+          git commit -m "Bump to $version"
+          git push origin main
+          
+          git tag -a $version
+          git push origin $version
+          
