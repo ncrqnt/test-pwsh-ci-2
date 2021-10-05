@@ -11,8 +11,17 @@ jobs:
         uses: actions/download-artifact@v2.0.10
         with:
           name: NewBuild
-
+      
+      - name: Publish GitHub release
+        id: githubrelease
+        uses: xresloader/upload-to-github-release@v1.3.2
+        with:
+          file: .\NewBuild\*
+          prerelease: true
+          tags: true
+      
       - name: Publish to PSGallery
+        if: steps.githubrelease.conclusion == success
         shell: pwsh
         env:
           PSGALLERY_TOKEN: ${{ secrets.PSGALLERY_TOKEN }}
