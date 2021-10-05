@@ -19,4 +19,4 @@ jobs:
         shell: pwsh
         env:
           PSGALLERY_TOKEN: ${{ secrets.PSGALLERY_TOKEN }}
-        run: Publish-Module -Name .\NewBuild\*\CITest.psd1 -NuGetApiKey $env:PSGALLERY_TOKEN -AllowPrerelease -Verbose
+        run: Publish-Module -Name ./NewBuild/*/CITest.psd1 -NuGetApiKey $env:PSGALLERY_TOKEN -AllowPrerelease -Verbose
