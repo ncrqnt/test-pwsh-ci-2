@@ -41,23 +41,5 @@ jobs:
       - name: Analyze code with PSScriptAnalyzer
         run: Invoke-Build -Task Analyze
 
-      - name: Upload Analyzer Results as artifact
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: AnalyzerResults
-          path: .\build\AnalyzerResults.xml
-
       - name: Test code with Pester tests
         run: Invoke-Build -Task Test
-
-      - name: Upload Pester Results as artifact
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: PesterResults
-          path: .\build\PesterResults.xml
-
-      - name: Upload Code Coverage as artifact
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: CodeCoverage
-          path: .\build\CodeCoverage.xml
