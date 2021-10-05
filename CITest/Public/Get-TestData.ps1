@@ -5,15 +5,19 @@
     This function fetches the test data from the database. Either by using ID or every entry.
 
     This is used just as an example module in order to test GitHub's CI functionalities
+.PARAMETER Id
+    Unique ID of item in database
+.PARAMETER Path
+    Path to sqlite3 database file
 .EXAMPLE
     PS C:\> Get-TestData -Id 1 -Path .\test.db
 
     Fetches the data from .\test.db with the ID 1
 .INPUTS
-    -Id: Optionally ID
-    -Path: Path to database location
+    System.Int
+    System.Path
 .OUTPUTS
-    Nonr
+    $null
 .NOTES
     Author:     ncrqnt
     Date:       28.09.2021
@@ -33,17 +37,11 @@ function Get-TestData {
             ValueFromPipeline = $true,
             ValueFromPipelineByPropertyName = $true,
             HelpMessage = "Path to database file")]
-        [ValidateNotNullOrEmpty()]
-        [string]
-        $Path
+        [ValidateScript({ if (Test-Path $_ -PathType Leaf) { $true } else { throw "$_ not found or not a file." } })]
+        [string]$Path
     )
 
     begin {
-        if (-not (Test-Path $Path)) {
-            Write-Error "Database '$Path' does not exist"
-            return
-        }
-
         $db = New-Object -TypeName Database -ArgumentList $Path
     }
 

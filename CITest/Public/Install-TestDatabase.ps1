@@ -6,14 +6,16 @@
     with a predefined test set.
 
     This is used just as an example module in order to test GitHub's CI functionalities
+.PARAMETER Path
+    Path to sqlite3 database file
 .EXAMPLE
     PS C:\> Install-TestDatabase -Path .\test.db
 
     Creates database and inserts test data to the specified file path.
 .INPUTS
-    -Path: Path to database location
+    System.String
 .OUTPUTS
-    Nonr
+    $null
 .NOTES
     Author:     ncrqnt
     Date:       28.09.2021
@@ -32,8 +34,7 @@ function Install-TestDatabase {
             ValueFromPipelineByPropertyName = $true,
             HelpMessage = "Path to database file")]
         [ValidateNotNullOrEmpty()]
-        [string]
-        $Path
+        [string]$Path
     )
 
     begin {

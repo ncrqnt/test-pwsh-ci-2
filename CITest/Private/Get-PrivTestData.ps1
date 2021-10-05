@@ -5,15 +5,16 @@
     This function fetches the test data from the database. Either by using ID or every entry.
 
     This is used just as an example module in order to test GitHub's CI functionalities
+.PARAMETER Id
+    Unique ID of item in database
 .EXAMPLE
-    PS C:\> Get-PrivTestData -Id 1 -Path .\test.db
+    PS C:\> Get-PrivTestData -Id 1
 
-    Fetches the data from .\test.db with the ID 1
+    Fetches the item with ID 1
 .INPUTS
-    -Id: Optionally ID
-    -Path: Path to database location
+    System.Int
 .OUTPUTS
-    Nonr
+    $null
 .NOTES
     Author:     ncrqnt
     Date:       28.09.2021
