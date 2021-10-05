@@ -4,10 +4,6 @@ on:
     branches:
       - main
       - feature/*
-    types:
-      - created
-      - ready_for_review
-      - reopened
     paths-ignore:
       - 'README.md'
       - '.github/**'
