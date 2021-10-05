@@ -1,4 +1,4 @@
-name: Build module
+name: Build
 on:
   push:
     branches:
@@ -76,7 +76,7 @@ jobs:
   publish:
     name: Publish module
     needs: build
-    if: needs.build.result == 'success' || needs.build.result == 'skipped'
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Download 'NewBuild' artifact
