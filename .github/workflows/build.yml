@@ -51,7 +51,7 @@ jobs:
 
       - name: Bump new version and upload tag
         run: |
-          $manifest = Invoke-LocalizedData -FileName CITest.psd1 -BaseDirectory .\CITest
+          $manifest = Import-LocalizedData -FileName CITest.psd1 -BaseDirectory .\CITest
           $version = "v$($manifest.ModuleVersion)"
 
           git config --global user.name 'Github Actions - Git Commit'
