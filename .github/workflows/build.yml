@@ -9,16 +9,10 @@ on:
       - '.gitignore'
 
   workflow_dispatch:
-    inputs:
-      skipbuild:
-        description: 'Skip Build'
-        required: false
-        default: 'false'
 
 jobs:
   build:
     name: Build module
-    if: github.event.inputs.skipbuild == 'false'
     runs-on: windows-latest
     steps:
       - name: Checkout repository code
@@ -76,7 +70,6 @@ jobs:
   publish:
     name: Publish module
     needs: build
-    if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Download 'NewBuild' artifact
