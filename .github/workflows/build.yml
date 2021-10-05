@@ -9,10 +9,16 @@ on:
       - '.gitignore'
 
   workflow_dispatch:
+    inputs:
+      skipbuild:
+        description: 'Skip Build'
+        required: false
+        default: 'false'
 
 jobs:
   build:
     name: Build module
+    if: github.event.inputs.skipbuild == 'false'
     runs-on: windows-latest
     steps:
       - name: Checkout repository code
@@ -66,4 +72,30 @@ jobs:
 
           git tag -a $version -m "$version"
           git push origin $version
+          
+  publish:
+    name: Publish module
+    needs: build
+    if: needs.build.result == 'success' || needs.build.result == 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download 'NewBuild' artifact
+        uses: actions/download-artifact@v2.0.10
+        with:
+          name: NewBuild
+
+      - name: Publish GitHub release
+        id: githubrelease
+        uses: xresloader/upload-to-github-release@v1.3.2
+        with:
+          file: .\NewBuild\*
+          prerelease: true
+          tags: true
+
+      - name: Publish to PSGallery
+        if: steps.githubrelease.conclusion == 'success'
+        shell: pwsh
+        env:
+          PSGALLERY_TOKEN: ${{ secrets.PSGALLERY_TOKEN }}
+        run: Publish-Module -Name ./NewBuild/*/CITest.psd1 -NuGetApiKey $env:PSGALLERY_TOKEN -AllowPrerelease -Verbose
 
