@@ -98,19 +98,19 @@ PrivateData = @{
         Tags = 'windows','test','github'
 
         # A URL to the license for this module.
-        LicenseUri = 'https://github.com/ncrqnt/test-pwsh-ci/blob/main/LICENSE'
+        LicenseUri = 'https://github.com/ncrqnt/test-pwsh-ci-2/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/ncrqnt/test-pwsh-ci'
+        ProjectUri = 'https://github.com/ncrqnt/test-pwsh-ci-2'
 
         # A URL to an icon representing this module.
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = 'https://github.com/ncrqnt/test-pwsh-ci/releases'
+        ReleaseNotes = 'https://github.com/ncrqnt/test-pwsh-ci-2/releases'
 
         # Prerelease string of this module
-        Prerelease = 'beta'
+        Prerelease = ''
 
         # Flag to indicate whether the module requires explicit user acceptance for install/update/save
         # RequireLicenseAcceptance = $false
