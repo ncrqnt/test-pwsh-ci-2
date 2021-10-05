@@ -30,6 +30,7 @@ jobs:
           prerelease_regex: ^v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+
           created_tag: ${{ steps.latestTag.tag }}
           create_draft: true
+          update_existing: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
