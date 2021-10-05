@@ -49,12 +49,6 @@ jobs:
           name: NewBuild
           path: .\build\CITest\*
 
-      - name: Upload new version to repo
-        uses: matheusalbino/git-commit@v1.0.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          message: Bump version
-
       - name: Bump new version and upload tag
         run: |
           $manifest = Invoke-LocalizedData -FileName CITest.psd1 -BaseDirectory .\CITest
