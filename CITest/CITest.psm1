@@ -1,7 +1,7 @@
 #region import classes
-$Classes = Get-ChildItem -Path $PSScriptRoot\Classes\*.ps1 -ErrorAction SilentlyContinue
+$classes = Get-ChildItem -Path $PSScriptRoot\Classes\*.ps1 -ErrorAction SilentlyContinue
 
-foreach ($class in $Classes) {
+foreach ($class in $classes) {
     try {
         . $class.FullName
     }
@@ -13,17 +13,13 @@ foreach ($class in $Classes) {
 #endregion
 
 #region get public and private function definition files.
-$Public  = @(
-    Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue
-)
-$Private = @(
-    Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue
-)
+$public = @(Get-ChildItem -Path "$PSScriptRoot\Public\*.ps1" -Exclude "*.Tests.*" -ErrorAction SilentlyContinue)
+$private = @(Get-ChildItem -Path "$PSScriptRoot\Private\*.ps1" -Exclude "*.Tests.*" -ErrorAction SilentlyContinue)
 #endregion
 
 #region source the files
-foreach ($function in @($Public + $Private)) {
-    $functionPath = $function.fullname
+foreach ($function in @($public + $private)) {
+    $functionPath = $function.FullName
     try {
         . $functionPath # dot source function
     }
@@ -43,5 +39,5 @@ foreach ($function in @($Public + $Private)) {
 #endregion
 
 #region export Public functions ($Public.BaseName) for WIP modules
-Export-ModuleMember -Function $Public.Basename
+Export-ModuleMember -Function $public.BaseName
 #endregion

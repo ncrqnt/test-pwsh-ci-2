@@ -33,7 +33,6 @@
     # will be excluded.
     ExcludeRules = @(
         'PSAvoidUsingWriteHost'
-        'PSAvoidGlobalVars'
     )
 
     # You can use rule configuration to configure rules that support it:
