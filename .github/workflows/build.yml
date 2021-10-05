@@ -79,6 +79,7 @@ jobs:
           name: NewBuild
       
       - name: Print path
+        shell: pwsh
         run: |
           Get-ChildItem ./
           Get-ChildItem ./NewBuild/
