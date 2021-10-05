@@ -57,7 +57,7 @@ jobs:
           git config --global user.name 'Github Actions - Git Commit'
           git config --global user.email 'github-actions-git-commit@users.noreply.github.com'
           git config --global init.defaultBranch main
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com&${{ github.repository }}
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git fetch
 
           git add .\CITest\CITest.psd1
