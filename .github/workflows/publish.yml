@@ -38,6 +38,7 @@ jobs:
         uses: potatoqualitee/psmodulecache@v3.5
 
       - name: Import SimplySql
+        shell: pwsh
         run: Import-Module SimplySql -ErrorAction Stop
       
       - name: Get latest tag
