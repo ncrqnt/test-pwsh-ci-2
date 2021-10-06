@@ -54,9 +54,9 @@ jobs:
           $version = "v$($manifest.ModuleVersion)"
 
           #git config --global user.name 'Github Actions - Git Commit'
-          #git config --global user.em#ail 'github-actions-git-commit@users.noreply.github.com'
+          #git config --global user.email 'github-actions-git-commit@users.noreply.github.com'
           git config --global user.name 'ncrqnt'
-          git config --global user.em#ail '44952997+ncrqnt@users.noreply.github.com'
+          git config --global user.email '44952997+ncrqnt@users.noreply.github.com'
           git config --global init.de#faultBranch main
           git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}
           git fetch
