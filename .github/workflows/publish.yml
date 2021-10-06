@@ -1,9 +1,11 @@
 name: Publish
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_run:
+    workflows: ['Build']
+    branches: [main]
+    types:
+      - completed
       
   workflow_dispatch:
 
@@ -34,7 +36,7 @@ jobs:
 
       - name: Publish to PSGallery
         if: steps.githubRelease.conclusion == 'success'
-        shell: pwsh
-        env:
-          PSGALLERY_TOKEN: ${{ secrets.PSGALLERY_TOKEN }}
-        run: Publish-Module -Name ./CITest/CITest.psd1 -NuGetApiKey $env:PSGALLERY_TOKEN -AllowPrerelease -Verbose
+        uses: pcgeek86/publish-powershell-module-action@v19
+        with:
+          modulePath: ./CITest/
+          NuGetApiKey: ${{ secrets.PSGALLERY_TOKEN }}
