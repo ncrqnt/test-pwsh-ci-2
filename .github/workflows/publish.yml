@@ -28,7 +28,7 @@ jobs:
           create_draft: true
           update_existing: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 
       - name: Publish to PSGallery
         if: steps.githubRelease.conclusion == 'success'
