@@ -36,7 +36,7 @@ jobs:
 
       - name: Publish to PSGallery
         if: steps.githubRelease.conclusion == 'success'
-        uses: pcgeek86/publish-powershell-module-action@v19
+        uses: pcgeek86/publish-powershell-module-action@v20
         with:
           modulePath: ./CITest/
           NuGetApiKey: ${{ secrets.PSGALLERY_TOKEN }}
