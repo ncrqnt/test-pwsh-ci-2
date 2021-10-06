@@ -25,6 +25,7 @@ jobs:
         uses: ncipollo/release-action@v1.8.10
         with:
           draft: true
+          allowUpdates: true
           tag: ${{ steps.latestTag.tag }}
 
       - name: Publish to PSGallery
