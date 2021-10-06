@@ -22,11 +22,11 @@ jobs:
       
       - name: Publish GitHub release
         id: githubRelease
-        uses: ncipollo/release-action@v1.8.10
+        uses: maxkomarychev/oction-create-release@v0.6.1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ steps.latestTag.tag }}
           draft: true
-          allowUpdates: true
-          tag: ${{ steps.latestTag.tag }}
 
       - name: Publish to PSGallery
         if: steps.githubRelease.conclusion == 'success'
