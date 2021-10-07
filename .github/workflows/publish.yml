@@ -13,6 +13,7 @@ jobs:
   publish:
     name: Publish module
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v2.3.4
         with:
