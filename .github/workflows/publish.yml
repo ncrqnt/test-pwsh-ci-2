@@ -18,28 +18,24 @@ jobs:
         with:
             fetch-depth: 0
             
-#      - name: Create variables for module cacher
-#        id: psmodulecache
-#        uses: potatoqualitee/psmodulecache@v3.5
-#        with:
-#          modules-to-cache: SimplySql
-#          shell: pwsh
+      - name: Create variables for module cacher
+        id: psmodulecache
+        uses: potatoqualitee/psmodulecache@v3.5
+        with:
+          modules-to-cache: SimplySql
+          shell: pwsh
 
-#      - name: Run module cacher action
-#        id: cacher
-#        uses: actions/cache@v2
-#        with:
-#          key: ${{ steps.psmodulecache.outputs.keygen }}
-#          path: |
-#            ${{ steps.psmodulecache.outputs.modulepath }}
+      - name: Run module cacher action
+        id: cacher
+        uses: actions/cache@v2
+        with:
+          key: ${{ steps.psmodulecache.outputs.keygen }}
+          path: |
+            ${{ steps.psmodulecache.outputs.modulepath }}
             
-#      - name: Install PowerShell modules
-#        if: steps.cacher.outputs.cache-hit != 'true'
-#        uses: potatoqualitee/psmodulecache@v3.5
-
-#      - name: Import SimplySql
-#        shell: pwsh
-#        run: Import-Module SimplySql -ErrorAction Stop
+      - name: Install PowerShell modules
+        if: steps.cacher.outputs.cache-hit != 'true'
+        uses: potatoqualitee/psmodulecache@v3.5
       
       - name: Get latest tag
         id: latestTag
@@ -60,4 +56,6 @@ jobs:
       - name: Publish to PSGallery
         if: steps.githubRelease.conclusion == 'success'
         shell: pwsh
-        run: Publish-Module -Name ./CITest -NuGetApiKey ${{ secrets.PSGALLERY_TOKEN }} -AllowPrerelease -Force
+        run: |
+          Import-Module SimplySql -ErrorAction Stop
+          Publish-Module -Name ./CITest -NuGetApiKey ${{ secrets.PSGALLERY_TOKEN }} -AllowPrerelease -Force
